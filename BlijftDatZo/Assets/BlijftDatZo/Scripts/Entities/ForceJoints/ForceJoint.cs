@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class ForceJoint : MonoBehaviour {
 
-	private const float ForceRange = 5;
-    private const float ForceMultiplier = 20;
+	private const float ForceRange = 3;
+    private const float ForceMultiplier = 10;
 
 	private GameController gameController;
 
@@ -17,22 +17,22 @@ public class ForceJoint : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () 
 	{
-		// (0, 0) - (screen.width, screen.height)
-		var mousepos = Input.mousePosition;
+        //// (0, 0) - (screen.width, screen.height)
+        //var mousepos = Input.mousePosition;
 
-		// normalized (0, 1)
-		Vector2 normalized = new Vector2 (mousepos.x / Screen.width, mousepos.y / Screen.height);
+        //// normalized (0, 1)
+        //Vector2 normalized = new Vector2 (mousepos.x / Screen.width, mousepos.y / Screen.height);
 
-		// normalized (-1, - 1)
-		normalized = normalized * 2 - new Vector2(1, 1);
+        //// normalized (-1, - 1)
+        //normalized = normalized * 2 - new Vector2(1, 1);
 
-		// adjust position of the game object to correspond to mouse position
-		Camera cam = Camera.main;
-		float verticalHalfSize = cam.orthographicSize;
-		float horizontalHalfSize = cam.aspect * verticalHalfSize;
-		var newx = horizontalHalfSize * normalized.x;
-		var newy = verticalHalfSize * normalized.y;
-		this.gameObject.transform.position = new Vector2 (newx, newy);
+        //// adjust position of the game object to correspond to mouse position
+        //Camera cam = Camera.main;
+        //float verticalHalfSize = cam.orthographicSize;
+        //float horizontalHalfSize = cam.aspect * verticalHalfSize;
+        //var newx = horizontalHalfSize * normalized.x;
+        //var newy = verticalHalfSize * normalized.y;
+        //this.gameObject.transform.position = new Vector2 (newx, newy);
 
 		// apply force to all particle gameobjects
 		List<ParticleBase> particles = this.gameController.AllActiveParticles;
