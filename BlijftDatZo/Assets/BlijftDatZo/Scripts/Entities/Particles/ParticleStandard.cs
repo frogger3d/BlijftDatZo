@@ -2,7 +2,8 @@
 using System.Collections;
 using Assets.BlijftDatZo.Scripts;
 
-public class Particle : MonoBehaviour 
+public class ParticleStandard : ParticleBase
+ 
 {
     private void Awake()
     {
