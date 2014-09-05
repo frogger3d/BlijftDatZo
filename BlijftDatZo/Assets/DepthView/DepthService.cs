@@ -2,7 +2,7 @@
 using System.Collections;
 using Windows.Kinect;
 
-public class DepthReader : MonoBehaviour
+public class DepthService : MonoBehaviour
 {
 	private KinectSensor sensor;
 
