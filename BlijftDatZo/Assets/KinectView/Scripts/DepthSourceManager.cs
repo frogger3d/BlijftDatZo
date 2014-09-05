@@ -35,6 +35,10 @@ public class DepthSourceManager : MonoBehaviour
                 frame.Dispose();
                 frame = null;
             }
+			else
+			{
+				Debug.Log ("depth frame null");
+			}
         }
     }
     
