@@ -18,7 +18,7 @@ public class JointSpawner : MonoBehaviour {
 	void Start () {
         this.bodyService = new BodyService();
 
-        for(int userIndex = 0; userIndex < 2; userIndex++)
+        for(int userIndex = 0; userIndex < 6; userIndex++)
         {
             var bodyObject = (GameObject)GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
             
@@ -32,22 +32,24 @@ public class JointSpawner : MonoBehaviour {
 	void Update () {
         this.bodyService.Update();
 
-        int width = 540;
-        int height = 440;
+        int width = 512;
+        int height = 424;
 
-        for(int i = 0; i < this.bodies.Count; i++)
+        for(int userIndex = 0; userIndex < this.bodies.Count; userIndex++)
         {
-            var position = this.bodyService.GetJointPosition(0, Windows.Kinect.JointType.Head);
+            var position = this.bodyService.GetJointPosition(userIndex, Windows.Kinect.JointType.Head);
             if(position.HasValue)
             {
-                this.bodies[i].SetActive(true);
-                var x = (position.Value.x / width) * 2 - 1;
-                var y = (position.Value.y / height) * 2 - 1;
-                this.bodies[0].transform.position = new Vector3(x, y);
+                this.bodies[userIndex].SetActive(true);
+                var x = Mathf.Lerp(-1, 1, position.Value.x / width);
+                var y = Mathf.Lerp(1, -1, position.Value.y / height);
+                var to = new Vector3(x, y);
+                Debug.Log(string.Format("Updating body position {0} to {1}", position.Value, to));
+                this.bodies[userIndex].transform.position = 4*to;
             }
             else
             {
-                this.bodies[i].SetActive(false);
+                this.bodies[userIndex].SetActive(false);
             }
         }
 	}

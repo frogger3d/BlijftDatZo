@@ -52,7 +52,7 @@ public class DepthService : MonoBehaviour
                         this._RawData = new byte[frameDesc.LengthInPixels * 4];
                     }
                 }
-
+                Debug.Log(string.Format("width {0} height {1}", frameDesc.Width, frameDesc.Height));
                 depthFrame.CopyFrameDataToArray(depthValues);
             }
         }
