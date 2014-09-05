@@ -24,9 +24,21 @@ public class ForceJoint : MonoBehaviour {
 		Camera cam = Camera.main;
 		float verticalHalfSize = cam.orthographicSize;
 		float horizontalHalfSize = cam.aspect * verticalHalfSize;
-
 		var newx = horizontalHalfSize * normalized.x;
 		var newy = verticalHalfSize * normalized.y;
 		this.gameObject.transform.position = new Vector2 (newx, newy);
+
+		// apply force to all particle gameobjects
+		GameObject[] objs = GameObject.FindGameObjectsWithTag("TEST");
+		if (objs != null && objs.Length > 0) 
+		{
+			Debug.Log("objs.length = " + objs.Length);
+			foreach(GameObject g in objs)
+			{
+				Vector2 direction = g.rigidbody2D.position - this.gameObject.rigidbody2D.position;
+				direction *= 0.2f;
+				g.rigidbody2D.AddForce(direction);
+			}
+		}
 	}
 }

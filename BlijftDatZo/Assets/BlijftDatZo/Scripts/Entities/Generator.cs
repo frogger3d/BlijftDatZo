@@ -32,5 +32,6 @@ public class Generator : MonoBehaviour
         GameObject particlePrefab = this.gameController.GetParticlePrefab();
         GameObject particle = (GameObject)GameObject.Instantiate(particlePrefab, Vector3.zero, Quaternion.identity);
         particle.transform.parent = this.particleParentObject.transform;
+		particle.tag = "TEST";
     }
 }
