@@ -41,11 +41,11 @@ public class JointSpawner : MonoBehaviour {
             if(position.HasValue)
             {
                 this.bodies[userIndex].SetActive(true);
-                var x = Mathf.Lerp(-1, 1, position.Value.x / width);
-                var y = Mathf.Lerp(1, -1, position.Value.y / height);
+                var x = Mathf.Lerp(-.5f, .5f, position.Value.x / width);
+                var y = Mathf.Lerp(.5f, -.5f, position.Value.y / height);
                 var to = new Vector3(x, y);
                 Debug.Log(string.Format("Updating body position {0} to {1}", position.Value, to));
-                this.bodies[userIndex].transform.position = 4*to;
+                this.bodies[userIndex].transform.localPosition = to;
             }
             else
             {
