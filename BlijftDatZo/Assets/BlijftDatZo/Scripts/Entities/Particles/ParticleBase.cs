@@ -16,6 +16,7 @@ public abstract class ParticleBase : MonoBehaviour, IPoolable
         this.gameObject.transform.position = position;
         this.gameObject.transform.rotation = rotation;
         this.gameObject.rigidbody2D.velocity = velocity;
+        this.gameObject.rigidbody2D.angularVelocity = 0;
     }
 
     public virtual void EnterPool()

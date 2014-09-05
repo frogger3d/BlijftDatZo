@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class ForceJoint : MonoBehaviour {
 
-	private const float ForceRange = 3;
+	private const float ForceRange = 5;
+    private const float ForceMultiplier = 20;
 
 	private GameController gameController;
 
@@ -47,10 +48,10 @@ public class ForceJoint : MonoBehaviour {
 				if (distSquared < RangeSquared)
 				{
 					float multiplier = 1f - (Mathf.Sqrt(distSquared) / ForceRange);
-					Vector2 force = diff * multiplier * 20f;
+					Vector2 force = diff * multiplier * ForceMultiplier;
 					//Vector2 force = diff * 20f;
-					p.rigidbody2D.AddForce(force);
-					Debug.Log("applied force " + force);
+					p.rigidbody2D.AddForce(force, ForceMode2D.Force);
+					//Debug.Log("applied force " + force);
 				}
 			}
 		}

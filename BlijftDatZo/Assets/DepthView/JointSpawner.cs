@@ -13,9 +13,15 @@ public class JointSpawner : MonoBehaviour
     List<GameObject> bodies = new List<GameObject>();
     private GameObject prefab;
 
+    List<JointType> trackedJoints = new List<JointType>() {
+        //JointType.Head, 
+        JointType.HandLeft, 
+        JointType.HandRight,
+    };
+
     void Awake()
     {
-        this.prefab = (GameObject)Resources.Load(@"Prefabs/ParticleStandard"); 
+        this.prefab = (GameObject)Resources.Load(@"Prefabs/ForceJoint"); 
     }
 
 	// Use this for initialization
@@ -31,7 +37,7 @@ public class JointSpawner : MonoBehaviour
             bodyObject.transform.localScale = new Vector3(1, 1, 1);
             this.bodies.Add(bodyObject);
 
-            for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
+            foreach (JointType jt in this.trackedJoints)
             {
                 GameObject jointObj = (GameObject)GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
                 jointObj.name = jt.ToString();
@@ -48,7 +54,7 @@ public class JointSpawner : MonoBehaviour
         for (int userIndex = 0; userIndex < this.bodies.Count; userIndex++)
         {
             this.bodies[userIndex].SetActive(true);
-            for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
+            foreach (JointType jt in this.trackedJoints)
             {
                 this.UpdatePosition(userIndex, jt);
             }
