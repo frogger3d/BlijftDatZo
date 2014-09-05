@@ -1,6 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Windows.Kinect;
+using System.Collections.Generic;
+using System.Linq;
+
+public struct ByteColor
+{
+    public byte Red;
+    public byte Green;
+    public byte Blue;
+
+    public static ByteColor FromColor(Color color)
+    {
+        return new ByteColor()
+        {
+            Red = (byte)(color.linear.r * 255),
+            Green = (byte)(color.linear.g * 255),
+            Blue = (byte)(color.linear.b * 255),
+        };
+    }
+}
 
 public class BodyMaskService : MonoBehaviour
 {
@@ -19,6 +38,8 @@ public class BodyMaskService : MonoBehaviour
     /// </summary>
     private byte[] _RawData;
 
+    private List<ByteColor> colors;
+
     void Start()
     {
         this.sensor = KinectSensor.GetDefault();
@@ -32,6 +53,11 @@ public class BodyMaskService : MonoBehaviour
                 this.sensor.Open();
             }
         }
+
+        this.colors = new Color[]
+        {
+            Color.blue, Color.green, Color.yellow, Color.red, Color.magenta, Color.cyan
+        }.Select(c => ByteColor.FromColor(c)).ToList();
         //gameObject.renderer.material.SetTextureScale("_MainTex", new Vector2(-1, 1));
     }
 
@@ -72,9 +98,10 @@ public class BodyMaskService : MonoBehaviour
                 }
                 else
                 {
-                    _RawData[index++] = 0; // Red
-                    _RawData[index++] = 255; // Green
-                    _RawData[index++] = 0; // Blue
+                    var color = this.colors[depth];
+                    _RawData[index++] = color.Red; // Red
+                    _RawData[index++] = color.Green; // Green
+                    _RawData[index++] = color.Blue; // Blue
                     _RawData[index++] = 255; // Alpha
                 }
                 
