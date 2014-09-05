@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ForceJoint : MonoBehaviour {
 
+	private const float ForceRange = 3;
+
+	private GameController gameController;
+
 	// Use this for initialization
 	void Start () {
-	
+		this.gameController = GameSceneController.Instance.GameController;
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
 		// (0, 0) - (screen.width, screen.height)
 		var mousepos = Input.mousePosition;
@@ -29,16 +34,30 @@ public class ForceJoint : MonoBehaviour {
 		this.gameObject.transform.position = new Vector2 (newx, newy);
 
 		// apply force to all particle gameobjects
-		GameObject[] objs = GameObject.FindGameObjectsWithTag("TEST");
-		if (objs != null && objs.Length > 0) 
+		List<ParticleBase> particles = this.gameController.AllActiveParticles;
+		if (particles.Count > 0) 
 		{
-			Debug.Log("objs.length = " + objs.Length);
-			foreach(GameObject g in objs)
+			//Debug.Log("#p: " + particles.Count);
+			foreach(ParticleBase p in particles)
 			{
-				Vector2 direction = g.rigidbody2D.position - this.gameObject.rigidbody2D.position;
-				direction *= 0.2f;
-				g.rigidbody2D.AddForce(direction);
+				// x positief als particle rechts van dit ding
+				// y positief als particle boven dit ding
+				Vector2 diff = p.rigidbody2D.position - this.gameObject.rigidbody2D.position;
+				float distSquared = diff.sqrMagnitude;
+				if (distSquared < RangeSquared)
+				{
+					float multiplier = 1f - (Mathf.Sqrt(distSquared) / ForceRange);
+					Vector2 force = diff * multiplier * 20f;
+					//Vector2 force = diff * 20f;
+					p.rigidbody2D.AddForce(force);
+					Debug.Log("applied force " + force);
+				}
 			}
 		}
+	}
+
+	private float RangeSquared
+	{
+		get { return Mathf.Pow(ForceRange, 2); }
 	}
 }

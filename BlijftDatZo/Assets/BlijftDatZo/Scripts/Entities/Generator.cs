@@ -4,7 +4,7 @@ using Assets.BlijftDatZo.Scripts;
 
 public class Generator : MonoBehaviour 
 {
-    private const float Interval = 0.1f;
+    private const float Interval = 1.5f;
 
     private float timeSinceLastParticle;
     private GameController gameController;
@@ -21,6 +21,7 @@ public class Generator : MonoBehaviour
     public void CollectParticle(ParticleBase particle)
     {
         this.particlesPool.AddObjectToPool(particle);
+		this.gameController.RemoveParticle (particle);
     }
 
     private void Update()
@@ -32,6 +33,7 @@ public class Generator : MonoBehaviour
             this.timeSinceLastParticle = 0;
             ParticleBase particle = this.particlesPool.GetObjectFromPool();
             particle.Setup(new Vector2(10, 0), Quaternion.identity, new Vector2(-10, 10));
+			this.gameController.AddParticle (particle);
         }
     }
 
@@ -42,6 +44,6 @@ public class Generator : MonoBehaviour
         particle.transform.parent = this.particleParentObject.transform;
         ParticleBase particleBase = particle.GetComponent<ParticleBase>();
         particleBase.Initialize(this);
-        return particleBase;
+		return particleBase;
     }
 }
