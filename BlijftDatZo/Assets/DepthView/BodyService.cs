@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Windows.Kinect;
+using System.Linq;
 
 public class BodyService
 {
@@ -62,7 +63,12 @@ public class BodyService
                 bodyFrame.GetAndRefreshBodyData(this.bodies);
             }
         }
+
+        if(updateCount++ % 30 == 0 && this.bodies != null)
+            Debug.Log("Bodies tracked" + bodies.Where(b => b.IsTracked).Count());
     }
+
+    int updateCount;
 
     /// <summary>
     /// This is kind of like the Dispose

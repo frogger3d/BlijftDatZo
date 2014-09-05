@@ -7,6 +7,12 @@ public class JointSpawner : MonoBehaviour {
     BodyService bodyService;
 
     List<GameObject> bodies = new List<GameObject>();
+    private GameObject prefab;
+
+    void Awake()
+    {
+        this.prefab = (GameObject)Resources.Load(@"Prefabs/ParticleStandard"); 
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -14,9 +20,9 @@ public class JointSpawner : MonoBehaviour {
 
         for(int userIndex = 0; userIndex < 2; userIndex++)
         {
-            var bodyObject = new GameObject();
-            bodyObject.transform.parent = this.transform;
+            var bodyObject = (GameObject)GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
             
+            bodyObject.transform.parent = this.transform;           
 
             this.bodies.Add(bodyObject);
         }
