@@ -2,13 +2,28 @@
 using System.Collections;
 using Windows.Kinect;
 
-public class BodyService : MonoBehaviour
+public class BodyService
 {
     private KinectSensor sensor;
 
     private BodyFrameReader bodyReader;
 
     private Body[] bodies;
+
+    public BodyService()
+    {
+        this.sensor = KinectSensor.GetDefault();
+
+        if (this.sensor != null)
+        {
+            this.bodyReader = sensor.BodyFrameSource.OpenReader();
+
+            if (!this.sensor.IsOpen)
+            {
+                this.sensor.Open();
+            }
+        }
+    }
 
     /// <summary>
     /// Gets the position of a joint of a user in depth space coordinates
@@ -32,23 +47,8 @@ public class BodyService : MonoBehaviour
         return new Vector2(depthPosition.X, depthPosition.Y);
     }
 
-    void Start()
-    {
-        this.sensor = KinectSensor.GetDefault();
-
-        if (this.sensor != null)
-        {
-            this.bodyReader = sensor.BodyFrameSource.OpenReader();
-
-            if (!this.sensor.IsOpen)
-            {
-                this.sensor.Open();
-            }
-        }
-    }
-
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         using (var bodyFrame = this.bodyReader.AcquireLatestFrame())
         {
