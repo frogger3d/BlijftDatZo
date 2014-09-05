@@ -18,6 +18,11 @@ public class Generator : MonoBehaviour
         this.particlesPool = new Pool<ParticleBase>(CreateParticle, 100, 50);
     }
 
+    public void CollectParticle(ParticleBase particle)
+    {
+        this.particlesPool.AddObjectToPool(particle);
+    }
+
     private void Update()
     {
         this.timeSinceLastParticle += Time.deltaTime;
@@ -25,7 +30,8 @@ public class Generator : MonoBehaviour
         if (this.timeSinceLastParticle > Interval)
         {
             this.timeSinceLastParticle = 0;
-            this.particlesPool.GetObjectFromPool();
+            ParticleBase particle = this.particlesPool.GetObjectFromPool();
+            particle.Setup(new Vector2(10, 0), Quaternion.identity, new Vector2(-10, 10));
         }
     }
 
@@ -34,6 +40,8 @@ public class Generator : MonoBehaviour
         GameObject particlePrefab = this.gameController.GetParticlePrefab();
         GameObject particle = (GameObject)GameObject.Instantiate(particlePrefab, Vector3.zero, Quaternion.identity);
         particle.transform.parent = this.particleParentObject.transform;
-        return particle.GetComponent<ParticleBase>();
+        ParticleBase particleBase = particle.GetComponent<ParticleBase>();
+        particleBase.Initialize(this);
+        return particleBase;
     }
 }
