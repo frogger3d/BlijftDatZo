@@ -55,10 +55,6 @@ public class DepthService : MonoBehaviour
 
                 depthFrame.CopyFrameDataToArray(depthValues);
             }
-            else
-            {
-                Debug.Log("depthFrame is null");
-            }
         }
 
         int min = 500;
