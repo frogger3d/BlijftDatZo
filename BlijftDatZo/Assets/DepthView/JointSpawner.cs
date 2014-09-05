@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Windows.Kinect;
 
-public class JointSpawner : MonoBehaviour {
+public class JointSpawner : MonoBehaviour
+{
+    const int WIDTH = 512;
+    const int HEIGHT = 424;
 
     BodyService bodyService;
 
@@ -15,42 +19,59 @@ public class JointSpawner : MonoBehaviour {
     }
 
 	// Use this for initialization
-	void Start () {
+    void Start()
+    {
         this.bodyService = new BodyService();
 
-        for(int userIndex = 0; userIndex < 6; userIndex++)
+        for (int userIndex = 0; userIndex < 6; userIndex++)
         {
-            var bodyObject = (GameObject)GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
-            
-            bodyObject.transform.parent = this.transform;           
-
+            // Add one game object per body
+            var bodyObject = new GameObject("body:" + userIndex);
+            bodyObject.transform.parent = this.transform;
+            bodyObject.transform.localScale = new Vector3(1, 1, 1);
             this.bodies.Add(bodyObject);
+
+            for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
+            {
+                GameObject jointObj = (GameObject)GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
+                jointObj.name = jt.ToString();
+                jointObj.transform.parent = bodyObject.transform;
+            }
         }
-	}
+    }
 	
 	// Update is called once per frame
-	void Update () {
+    void Update()
+    {
         this.bodyService.Update();
 
-        int width = 512;
-        int height = 424;
-
-        for(int userIndex = 0; userIndex < this.bodies.Count; userIndex++)
+        for (int userIndex = 0; userIndex < this.bodies.Count; userIndex++)
         {
-            var position = this.bodyService.GetJointPosition(userIndex, Windows.Kinect.JointType.Head);
-            if(position.HasValue)
+            this.bodies[userIndex].SetActive(true);
+            for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
             {
-                this.bodies[userIndex].SetActive(true);
-                var x = Mathf.Lerp(-.5f, .5f, position.Value.x / width);
-                var y = Mathf.Lerp(.5f, -.5f, position.Value.y / height);
-                var to = new Vector3(x, y);
-                Debug.Log(string.Format("Updating body position {0} to {1}", position.Value, to));
-                this.bodies[userIndex].transform.localPosition = to;
-            }
-            else
-            {
-                this.bodies[userIndex].SetActive(false);
+                this.UpdatePosition(userIndex, jt);
             }
         }
-	}
+    }
+
+    private void UpdatePosition(int userIndex, JointType jointType)
+    {
+        var position = this.bodyService.GetJointPosition(userIndex, jointType);
+        var bodyObject = this.bodies[userIndex];
+        var jointObject = bodyObject.transform.FindChild(jointType.ToString()).gameObject;
+
+        if (position.HasValue)
+        {
+            jointObject.SetActive(true);
+            var x = Mathf.Lerp(-.5f, .5f, position.Value.x / WIDTH);
+            var y = Mathf.Lerp(.5f, -.5f, position.Value.y / HEIGHT);
+            var to = new Vector3(x, y);
+            jointObject.transform.localPosition = to;
+        }
+        else
+        {
+            jointObject.SetActive(false);
+        }
+    }
 }
