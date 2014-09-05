@@ -3,14 +3,12 @@ using System.Collections;
 using Assets.BlijftDatZo.Scripts;
 
 public class ParticleStandard : ParticleBase
- 
 {
-    private void Awake()
+    private void Update()
     {
-
-    }
-    private void Start()
-    {
-
+        if (this.gameObject.transform.position.y < Constants.WorldHeight * -0.5f)
+        {
+            this.Generator.CollectParticle(this);
+        }
     }
 }
