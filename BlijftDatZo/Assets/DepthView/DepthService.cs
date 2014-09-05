@@ -12,7 +12,7 @@ public class DepthService : MonoBehaviour
 
 	private Texture2D texture;
 
-	private ushort[] depth;
+	private ushort[] depthValues;
 
 	/// <summary>
 	/// Raw data to load in the texture
@@ -46,14 +46,14 @@ public class DepthService : MonoBehaviour
                 if (this.texture == null)
                 {
                     this.texture = new Texture2D(frameDesc.Width, frameDesc.Height, TextureFormat.RGBA32, false);
-                    if (this.depth == null || depth.Length != frameDesc.LengthInPixels)
+                    if (this.depthValues == null || depthValues.Length != frameDesc.LengthInPixels)
                     {
-                        this.depth = new ushort[frameDesc.LengthInPixels];
+                        this.depthValues = new ushort[frameDesc.LengthInPixels];
                         this._RawData = new byte[frameDesc.LengthInPixels * 4];
                     }
                 }
 
-                depthFrame.CopyFrameDataToArray(depth);
+                depthFrame.CopyFrameDataToArray(depthValues);
             }
             else
             {
@@ -63,15 +63,18 @@ public class DepthService : MonoBehaviour
 
         int min = 500;
         int max = 4500;
-        if (this.depth != null)
+        if (this.depthValues != null)
         {
-            Debug.Log("loading texture");
             int index = 0;
-            foreach (var ir in depth)
+            foreach (var depth in depthValues)
             {
-
-                float fintensity = Mathf.InverseLerp(min, max, ir);
+                float fintensity = Mathf.InverseLerp(min, max, depth);
                 byte intensity = (byte)Mathf.Lerp(255, 0, fintensity);
+                if(depth > max)
+                {
+                    //intensity = 0;
+                }
+                
                 _RawData[index++] = intensity;
                 _RawData[index++] = intensity;
                 _RawData[index++] = intensity;
