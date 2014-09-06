@@ -24,7 +24,8 @@ public class StreamGenerator : GeneratorBase
 
         this.particlesParent = new GameObject("Particles");
         
-        this.transform.position = CommonUtils.GetRandomPositionInLevel(Constants.WorldWidth * 0.9f, Constants.WorldHeight * 0.9f);
+        this.transform.position = CommonUtils.GetRandomPositionInLevel(Constants.WorldWidth * 0.9f, Constants.WorldHeight * 0.8f) +
+			new Vector2(0, Constants.WorldHeight * 0.2f);
         this.collectorObject = (GameObject) GameObject.Instantiate(
             prefabCollector,
             CommonUtils.GetRandomPositionInLevel(Constants.WorldWidth * 0.9f, Constants.WorldHeight * 0.9f), 
