@@ -64,8 +64,10 @@ public class BodyService
             }
         }
 
-        if(updateCount++ % 30 == 0 && this.bodies != null)
-            Debug.Log("Bodies tracked" + bodies.Where(b => b.IsTracked).Count());
+        if (updateCount++ % 30 == 0 && this.bodies != null)
+        {
+            //Debug.Log("Bodies tracked" + bodies.Where(b => b.IsTracked).Count());
+        }
     }
 
     int updateCount;

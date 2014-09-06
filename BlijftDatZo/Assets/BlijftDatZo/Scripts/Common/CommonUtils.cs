@@ -39,6 +39,12 @@ public static class CommonUtils
         return point;
     }
 
+    public static Vector2 GetRandomPositionInLevel(float levelWidth, float levelHeight)
+    {
+        return new Vector2(Random.Range(levelWidth * -0.5f, levelWidth * 0.5f),
+            Random.Range(levelHeight * -0.5f, levelHeight * 0.5f));
+    }
+
     public static float GetNormalDistributedRandom(float min, float max)
     {
         float range = (max - min) / 3f;
