@@ -80,7 +80,7 @@ public class JointSpawner : MonoBehaviour
     {
         this.bodyService.Update();
 
-        if(this.bodyService.updateCount % 150 == 0)
+        if(this.bodyService.updateCount % 1500 == 0)
         {
             this.ReshuffleJoints();
         }
