@@ -2,7 +2,7 @@
 using System.Collections;
 using Assets.BlijftDatZo.Scripts;
 
-public class ParticleStandard : ParticleBase
+public class StreamParticle : ParticleBase
 {
     private void Update()
     {
