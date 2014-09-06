@@ -7,7 +7,9 @@ public class GameController : MonoBehaviour
 {
     //private GameObject prefabParticleStandard;
 	private List<GameObject> generatorPrefabs;
-    
+	private AudioClip[] audioClipsA;
+	private AudioClip[] audioClipsB;
+
 	public List<ParticleBase> AllActiveParticles { 
 				get ;
 				private set;
@@ -24,6 +26,18 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         InstantiateRandomGenerator();
+
+		this.audioClipsA = new AudioClip[6];
+		for (int i = 0; i < this.audioClipsA.Length; i++) 
+		{
+			this.audioClipsA [i] = (AudioClip)Resources.Load (@"Sounds/A" + (i + 1));
+		}
+		
+		this.audioClipsB = new AudioClip[10];
+		for (int i = 0; i < this.audioClipsB.Length; i++) 
+		{
+			this.audioClipsB [i] = (AudioClip)Resources.Load (@"Sounds/B" + (i + 1));
+		}
     }
 
     private void InstantiateRandomGenerator()
@@ -32,6 +46,16 @@ public class GameController : MonoBehaviour
         GeneratorBase generator = generatorObject.GetComponent<GeneratorBase>();
         generator.Initialize(this);
     }
+
+	public AudioClip[] GetAudioClipsA()
+	{
+				return this.audioClipsA;
+		}
+
+	public AudioClip[] GetAudioClipsB()
+	{
+		return this.audioClipsB;
+	}
 
     public void GameStateFinished()
     {
