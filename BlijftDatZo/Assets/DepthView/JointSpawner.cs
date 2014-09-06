@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Windows.Kinect;
@@ -13,10 +14,15 @@ public class JointSpawner : MonoBehaviour
     List<GameObject> bodies = new List<GameObject>();
     private GameObject prefab;
 
-    List<JointType> trackedJoints = new List<JointType>() {
-        //JointType.Head, 
+    List<JointType> trackedJoints = new List<JointType>();
+    List<JointType> possibleJoints = new List<JointType>() {
+        JointType.Head, 
         JointType.HandLeft, 
         JointType.HandRight,
+        JointType.HipLeft,
+        JointType.HipRight,
+        JointType.KneeLeft,
+        JointType.KneeRight,
     };
 
     void Awake()
@@ -28,6 +34,20 @@ public class JointSpawner : MonoBehaviour
     void Start()
     {
         this.bodyService = new BodyService();
+        this.ReshuffleJoints();
+    }
+
+    private void ClearBodies()
+    {
+        foreach(var body in this.bodies)
+        {
+            GameObject.Destroy(body);
+        }
+        this.bodies.Clear();
+    }
+
+    private void CreateBodies(IList<JointType> trackedJoints)
+    {
 
         for (int userIndex = 0; userIndex < 6; userIndex++)
         {
@@ -37,7 +57,7 @@ public class JointSpawner : MonoBehaviour
             bodyObject.transform.localScale = new Vector3(1, 1, 1);
             this.bodies.Add(bodyObject);
 
-            foreach (JointType jt in this.trackedJoints)
+            foreach (JointType jt in trackedJoints)
             {
                 GameObject jointObj = (GameObject)GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
                 jointObj.name = jt.ToString();
@@ -45,11 +65,25 @@ public class JointSpawner : MonoBehaviour
             }
         }
     }
+
+    System.Random random = new System.Random();
+
+    private void ReshuffleJoints()
+    {
+        this.ClearBodies();
+        this.trackedJoints = this.possibleJoints.OrderBy(j => random.Next()).Take(2).ToList();
+        this.CreateBodies(this.trackedJoints);
+    }
 	
 	// Update is called once per frame
     void Update()
     {
         this.bodyService.Update();
+
+        if(this.bodyService.updateCount % 150 == 0)
+        {
+            this.ReshuffleJoints();
+        }
 
         for (int userIndex = 0; userIndex < this.bodies.Count; userIndex++)
         {

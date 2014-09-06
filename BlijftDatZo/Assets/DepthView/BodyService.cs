@@ -70,7 +70,7 @@ public class BodyService
         }
     }
 
-    int updateCount;
+    public int updateCount;
 
     /// <summary>
     /// This is kind of like the Dispose
