@@ -19,8 +19,8 @@ public class JointSpawner : MonoBehaviour
         JointType.Head, 
         JointType.HandLeft, 
         JointType.HandRight,
-        JointType.HipLeft,
-        JointType.HipRight,
+        JointType.ElbowLeft,
+        JointType.ElbowRight,
         JointType.KneeLeft,
         JointType.KneeRight,
     };
