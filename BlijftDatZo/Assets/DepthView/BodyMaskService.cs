@@ -56,8 +56,17 @@ public class BodyMaskService : MonoBehaviour
 
         this.colors = new Color[]
         {
-            Color.blue, Color.green, Color.yellow, Color.red, Color.magenta, Color.cyan
-        }.Select(c => ByteColor.FromColor(c)).ToList();
+            Color.red,
+            // orange
+            new Color(255,128,0),
+            Color.blue,
+            // light green
+            new Color(153, 255, 153),
+            new Color(153,51,255),
+            Color.yellow,
+        }
+        .Select(c => ByteColor.FromColor(c))
+        .ToList();
         //gameObject.renderer.material.SetTextureScale("_MainTex", new Vector2(-1, 1));
     }
 
