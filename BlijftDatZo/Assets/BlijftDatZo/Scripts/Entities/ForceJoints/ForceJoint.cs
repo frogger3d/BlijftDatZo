@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ForceJoint : MonoBehaviour {
 
-	private const float ForceRange = 3;
+	private const float ForceRange = 4;
     private const float ForceMultiplier = 10;
 
 	private GameController gameController;
