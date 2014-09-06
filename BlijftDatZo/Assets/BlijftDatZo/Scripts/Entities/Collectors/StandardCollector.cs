@@ -9,10 +9,13 @@ public class StandardCollector : MonoBehaviour
     private GeneratorBase generator;
     private int collectionGoal;
     private int collected;
+	private SoundPlayer soundPlayer;
+
     public void Initialize(GeneratorBase generator, int collectionGoal)
     {
         this.generator = generator;
         this.collectionGoal = collectionGoal;
+		this.soundPlayer = new SoundPlayer ();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -21,6 +24,7 @@ public class StandardCollector : MonoBehaviour
         if (particleBase != null)
         {
             particleBase.HitCollector();
+			this.soundPlayer.PlayA(this.audio);
             this.collected++;
             if (this.collected >= this.collectionGoal)
             {

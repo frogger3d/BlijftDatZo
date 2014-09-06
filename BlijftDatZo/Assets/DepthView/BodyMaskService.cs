@@ -87,7 +87,7 @@ public class BodyMaskService : MonoBehaviour
                         this._RawData = new byte[frameDesc.LengthInPixels * 4];
                     }
                 }
-                Debug.Log(string.Format("width {0} height {1}", frameDesc.Width, frameDesc.Height));
+                //Debug.Log(string.Format("width {0} height {1}", frameDesc.Width, frameDesc.Height));
                 depthFrame.CopyFrameDataToArray(maskValues);
             }
         }
