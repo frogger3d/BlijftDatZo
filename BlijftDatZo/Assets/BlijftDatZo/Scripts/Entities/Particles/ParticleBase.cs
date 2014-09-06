@@ -4,9 +4,9 @@ using UnityEngine;
 
 public abstract class ParticleBase : MonoBehaviour, IPoolable
 {
-    protected Generator Generator { get; private set; }
+    protected StreamGenerator Generator { get; private set; }
 
-    public void Initialize(Generator generator)
+    public void Initialize(StreamGenerator generator)
     {
         this.Generator = generator;
     }
@@ -17,6 +17,11 @@ public abstract class ParticleBase : MonoBehaviour, IPoolable
         this.gameObject.transform.rotation = rotation;
         this.gameObject.rigidbody2D.velocity = velocity;
         this.gameObject.rigidbody2D.angularVelocity = 0;
+    }
+
+    public void HitCollector()
+    {
+        this.Generator.CollectParticle(this);
     }
 
     public virtual void EnterPool()

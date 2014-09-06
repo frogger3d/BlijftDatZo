@@ -5,7 +5,7 @@ namespace Assets.BlijftDatZo.Scripts
     {
         public const string TagGameSceneController = "GameSceneController";
 
-        public const float WorldWidth = 10;
-        public const float WorldHeight = 8;
+        public const float WorldWidth = 13;
+        public const float WorldHeight = 10;
     }
 }

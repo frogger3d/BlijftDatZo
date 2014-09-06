@@ -57,7 +57,7 @@ public class DepthService : MonoBehaviour
             }
         }
 
-        int min = 500;
+        int min = 1500;
         int max = 4500;
         if (this.depthValues != null)
         {
@@ -66,11 +66,11 @@ public class DepthService : MonoBehaviour
             {
                 float fintensity = Mathf.InverseLerp(min, max, depth);
                 byte intensity = (byte)Mathf.Lerp(255, 0, fintensity);
-                if(depth > max)
+                if (depth > max)
                 {
                     //intensity = 0;
                 }
-                
+
                 _RawData[index++] = intensity;
                 _RawData[index++] = intensity;
                 _RawData[index++] = intensity;
@@ -80,7 +80,7 @@ public class DepthService : MonoBehaviour
             this.texture.Apply();
 
 
-            gameObject.renderer.material.mainTexture = this.texture;
+            gameObject.renderer.material.SetTexture("_BumpMap", this.texture);
         }
     }
 
