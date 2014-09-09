@@ -40,6 +40,11 @@ public class BodyMaskService : MonoBehaviour
 
     private List<ByteColor> colors;
 
+    /// <summary>
+    /// The index of the body mask to fill in
+    /// </summary>
+    public int BodyIndex;
+
     void Start()
     {
         this.sensor = KinectSensor.GetDefault();
@@ -97,17 +102,17 @@ public class BodyMaskService : MonoBehaviour
             int index = 0;
             foreach (var depth in maskValues)
             {
-                if (depth > 5)
+                if (depth == this.BodyIndex)
                 {
                     byte intensity = 0;
                     _RawData[index++] = intensity;
                     _RawData[index++] = intensity;
                     _RawData[index++] = intensity;
-                    _RawData[index++] = 0; // Alpha
+                    _RawData[index++] = 255; // Alpha
                 }
                 else
                 {
-                    var color = this.colors[depth];
+                    var color = new ByteColor(); // this.colors[depth];
                     _RawData[index++] = color.Red; // Red
                     _RawData[index++] = color.Green; // Green
                     _RawData[index++] = color.Blue; // Blue
@@ -117,9 +122,8 @@ public class BodyMaskService : MonoBehaviour
             }
             this.texture.LoadRawTextureData(_RawData);
             this.texture.Apply();
-
-
-            gameObject.renderer.material.mainTexture = this.texture;
+            
+            gameObject.renderer.material.SetTexture("_Alpha", this.texture);
         }
     }
 

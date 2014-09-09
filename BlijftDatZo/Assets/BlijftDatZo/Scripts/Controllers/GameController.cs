@@ -15,13 +15,38 @@ public class GameController : MonoBehaviour
 				private set;
 	}
 
+    private List<string> textureResources = new List<string>()
+    {
+        @"glitter-pictures-1.jpg",
+        @"gold-glitter-wallpaper-7.jpg",
+        @"hd-texture-farbige-zuckerlinsen-11LR0053S.png",
+        @"hs-2010-13-g-xlarge_web.jpg",
+        @"img100.jpg",
+        @"wood-texture-abstract-hd-wallpaper-1920x1200-5488"
+    };
+
 	private void Awake()
     {
+        // Start body mask background for each user
+        var maskPrefab = Resources.Load<GameObject>(@"Prefabs/Mask");
+        var scalar = GameObject.FindGameObjectWithTag(Constants.TagScalar);
+        for (int i = 0; i < 6; i++)
+        {
+            var maskObject = (GameObject)GameObject.Instantiate(maskPrefab);
+            var texture = (Texture2D)Resources.Load(@"Masks/" + textureResources[i]);
+            maskObject.renderer.material.mainTexture = texture;
+            var maskService = maskObject.GetComponent<BodyMaskService>();
+            maskService.BodyIndex = i;
+            maskObject.transform.parent = scalar.transform;
+        }
+
+        // Instantiate particle factory
         //this.prefabParticleStandard = (GameObject)Resources.Load(@"Prefabs/StreamParticle");
-		this.AllActiveParticles = new List<ParticleBase> ();
+        this.AllActiveParticles = new List<ParticleBase>();
         generatorPrefabs = new List<GameObject>();
         generatorPrefabs.Add((GameObject)Resources.Load(@"Prefabs/StreamGenerator"));
 
+        // Load audio
 		this.audioClipsA = new AudioClip[6];
 		for (int i = 0; i < this.audioClipsA.Length; i++) 
 		{
