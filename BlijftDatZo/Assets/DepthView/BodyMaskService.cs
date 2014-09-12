@@ -44,6 +44,7 @@ public class BodyMaskService : MonoBehaviour
     /// The index of the body mask to fill in
     /// </summary>
     public int BodyIndex;
+    public Texture2D MaskTexture;
 
     void Start()
     {
@@ -116,7 +117,7 @@ public class BodyMaskService : MonoBehaviour
                     _RawData[index++] = color.Red; // Red
                     _RawData[index++] = color.Green; // Green
                     _RawData[index++] = color.Blue; // Blue
-                    _RawData[index++] = 255; // Alpha
+                    _RawData[index++] = 0; // Alpha
                 }
                 
             }
@@ -124,6 +125,7 @@ public class BodyMaskService : MonoBehaviour
             this.texture.Apply();
             
             gameObject.renderer.material.SetTexture("_Alpha", this.texture);
+            gameObject.renderer.material.SetTexture("_MainTex", this.MaskTexture);
         }
     }
 

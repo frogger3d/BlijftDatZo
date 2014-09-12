@@ -17,11 +17,11 @@ public class GameController : MonoBehaviour
 
     private List<string> textureResources = new List<string>()
     {
-        @"glitter-pictures-1.jpg",
-        @"gold-glitter-wallpaper-7.jpg",
-        @"hd-texture-farbige-zuckerlinsen-11LR0053S.png",
-        @"hs-2010-13-g-xlarge_web.jpg",
-        @"img100.jpg",
+        @"glitter-pictures-1",
+        @"gold-glitter-wallpaper-7",
+        @"hd-texture-farbige-zuckerlinsen-11LR0053S",
+        @"hs-2010-13-g-xlarge_web",
+        @"img100",
         @"wood-texture-abstract-hd-wallpaper-1920x1200-5488"
     };
 
@@ -33,11 +33,12 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             var maskObject = (GameObject)GameObject.Instantiate(maskPrefab);
-            var texture = (Texture2D)Resources.Load(@"Masks/" + textureResources[i]);
-            maskObject.renderer.material.mainTexture = texture;
+            var texture = Resources.Load(@"Masks/" + textureResources[i]);
             var maskService = maskObject.GetComponent<BodyMaskService>();
-            maskService.BodyIndex = i;
+			maskService.MaskTexture = texture as Texture2D;
+			maskService.BodyIndex = i;
             maskObject.transform.parent = scalar.transform;
+			maskObject.transform.localScale = new Vector3(1,-1, 1);
         }
 
         // Instantiate particle factory
